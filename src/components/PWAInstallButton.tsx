@@ -36,11 +36,11 @@ export const PWAInstallButton: React.FC<Props> = ({ lang = 'ne' }) => {
       <button
         onClick={handleInstallClick}
         disabled={isInstalling}
-        className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-slate-950 shadow-md shadow-amber-500/20 hover:from-amber-400 hover:to-amber-500 active:scale-95 transition-all cursor-pointer"
-        title="Install Progressive Web App"
+        className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 p-1.5 sm:px-2.5 sm:py-1.5 text-xs font-bold text-slate-950 shadow-xs hover:from-amber-400 hover:to-amber-500 active:scale-95 transition-all cursor-pointer flex-shrink-0"
+        title="एप स्थापना गर्नुहोस् (Install PWA)"
       >
-        <Download className="w-4 h-4 text-slate-950" />
-        <span>{lang === 'ne' ? 'एप स्थापना गर्नुहोस् (Install PWA)' : 'Install App (PWA)'}</span>
+        <Download className="w-3.5 h-3.5 text-slate-950" />
+        <span className="hidden md:inline">{lang === 'ne' ? 'इन्स्टल' : 'Install'}</span>
       </button>
     );
   }
@@ -51,10 +51,11 @@ export const PWAInstallButton: React.FC<Props> = ({ lang = 'ne' }) => {
       <>
         <button
           onClick={() => setShowIOSGuide(true)}
-          className="flex items-center gap-1.5 rounded-lg border border-amber-400/50 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-300 hover:bg-amber-500/20 transition cursor-pointer"
+          className="flex items-center gap-1 rounded-lg border border-amber-400/50 bg-amber-500/10 p-1.5 sm:px-2.5 sm:py-1.5 text-xs font-semibold text-amber-300 hover:bg-amber-500/20 transition cursor-pointer flex-shrink-0"
+          title="iPhone मा राख्नुहोस्"
         >
           <Smartphone className="w-3.5 h-3.5" />
-          <span>{lang === 'ne' ? 'iPhone मा राख्नुहोस्' : 'Install on iPhone'}</span>
+          <span className="hidden md:inline">iPhone</span>
         </button>
 
         {showIOSGuide && (
