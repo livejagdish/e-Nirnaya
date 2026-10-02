@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { GazetteData, GazetteRuleItem } from '../data/niyamawaliData';
 import { PWAInstallButton } from './PWAInstallButton';
+import { AboutPrivacyModal } from './AboutPrivacyModal';
 
 interface Props {
   data: GazetteData;
@@ -67,6 +68,7 @@ export const MobileReader: React.FC<Props> = ({
   const [viewMode, setViewMode] = useState<'dashboard' | 'rule'>('dashboard');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
+  const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -220,40 +222,38 @@ export const MobileReader: React.FC<Props> = ({
     >
       
       {/* Top Header Bar */}
-      <header className={`sticky top-0 z-30 border-b backdrop-blur-md px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 select-none ${
-        theme === 'dark' ? 'bg-slate-900/90 border-slate-800' : 'bg-white/95 border-slate-200 shadow-xs'
+      <header className={`sticky top-0 z-30 border-b backdrop-blur-md px-2.5 sm:px-6 py-2 flex items-center justify-between gap-1.5 sm:gap-3 select-none w-full max-w-full overflow-hidden ${
+        theme === 'dark' ? 'bg-slate-900/95 border-slate-800' : 'bg-white/95 border-slate-200 shadow-xs'
       }`}>
         
         {/* App Title & View Toggle */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0 flex-shrink">
           <div 
             onClick={() => setViewMode('dashboard')}
-            className="px-2.5 py-1 rounded-lg bg-[#003893] text-white font-black text-[11px] sm:text-xs tracking-tight shadow-xs hover:brightness-110 active:scale-95 transition cursor-pointer select-none flex-shrink-0"
+            className="px-2 sm:px-2.5 py-1 rounded-lg bg-[#003893] text-white font-black text-[11px] sm:text-xs tracking-tight shadow-xs hover:brightness-110 active:scale-95 transition cursor-pointer select-none flex-shrink-0"
             title="e-Nirnaya ड्यासबोर्ड"
           >
             e-Nirnaya
           </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <h1 className="text-xs sm:text-sm font-extrabold tracking-tight truncate max-w-[140px] sm:max-w-xs md:max-w-md">
-                {data.title}
-              </h1>
-            </div>
-            <p className="text-[10px] font-semibold text-red-600 dark:text-red-400">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xs sm:text-sm font-extrabold tracking-tight truncate max-w-[90px] min-[380px]:max-w-[130px] sm:max-w-xs md:max-w-md">
+              {data.title}
+            </h1>
+            <p className="text-[10px] font-semibold text-red-600 dark:text-red-400 truncate">
               {viewMode === 'dashboard' 
-                ? 'ड्यासबोर्ड | ५ परिच्छेद, ५१ नियमहरू' 
-                : `नियम ${currentRule?.rule_number} / ${totalRules} (परिच्छेद ${currentRule?.chapter_number})`}
+                ? '५ परिच्छेद, ५१ नियम' 
+                : `नियम ${currentRule?.rule_number} / ${totalRules}`}
             </p>
           </div>
         </div>
 
-        {/* Controls: Dashboard Switch, Search, A- A+, Theme, Admin */}
-        <div className="flex items-center gap-1 sm:gap-2">
+        {/* Controls: Dashboard Switch, Search, A- A+, Theme */}
+        <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
           
           {/* Dashboard / Rule Mode Switcher */}
           <button
             onClick={() => setViewMode(viewMode === 'dashboard' ? 'rule' : 'dashboard')}
-            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-xs font-bold transition cursor-pointer ${
+            className={`flex items-center gap-1 p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg border text-xs font-bold transition cursor-pointer flex-shrink-0 ${
               viewMode === 'dashboard'
                 ? 'bg-red-700 text-white border-red-700 shadow-xs'
                 : theme === 'dark'
@@ -271,31 +271,31 @@ export const MobileReader: React.FC<Props> = ({
           {/* Search Button */}
           <button
             onClick={() => setShowSearchModal(true)}
-            className={`p-1.5 rounded-lg border text-xs transition cursor-pointer ${
+            className={`p-1.5 rounded-lg border text-xs transition cursor-pointer flex-shrink-0 ${
               theme === 'dark' 
                 ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200' 
                 : 'border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700'
             }`}
             title="नियम खोज्नुहोस्"
           >
-            <Search className="w-4 h-4" />
+            <Search className="w-3.5 h-3.5" />
           </button>
 
           {/* Text Size A- A+ */}
-          <div className={`flex items-center rounded-lg border text-xs font-bold ${
+          <div className={`flex items-center rounded-lg border text-xs font-bold flex-shrink-0 ${
             theme === 'dark' ? 'border-slate-700 bg-slate-800' : 'border-slate-200 bg-slate-100'
           }`}>
             <button
               onClick={onDecreaseText}
-              className="px-2 py-1 hover:bg-black/10 dark:hover:bg-white/10 rounded-l-lg transition cursor-pointer"
+              className="px-1.5 py-1 hover:bg-black/10 dark:hover:bg-white/10 rounded-l-lg transition cursor-pointer text-[11px]"
               title="अक्षर सानो (A-)"
             >
               A-
             </button>
-            <span className="px-1 text-[11px] opacity-60">|</span>
+            <span className="text-[10px] opacity-40">|</span>
             <button
               onClick={onIncreaseText}
-              className="px-2 py-1 hover:bg-black/10 dark:hover:bg-white/10 rounded-r-lg transition cursor-pointer"
+              className="px-1.5 py-1 hover:bg-black/10 dark:hover:bg-white/10 rounded-r-lg transition cursor-pointer text-[11px]"
               title="अक्षर ठूलो (A+)"
             >
               A+
@@ -305,14 +305,14 @@ export const MobileReader: React.FC<Props> = ({
           {/* Color Theme: Light / Dark Only */}
           <button
             onClick={onToggleTheme}
-            className={`p-1.5 rounded-lg border text-xs transition cursor-pointer ${
+            className={`p-1.5 rounded-lg border text-xs transition cursor-pointer flex-shrink-0 ${
               theme === 'dark'
                 ? 'border-slate-700 bg-slate-800 text-amber-400 hover:bg-slate-700'
                 : 'border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
             title={theme === 'dark' ? 'उज्यालो मोड (Light)' : 'रात्री मोड (Dark)'}
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {theme === 'dark' ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
           </button>
 
           {/* PWA Install Button */}
@@ -330,9 +330,21 @@ export const MobileReader: React.FC<Props> = ({
           <div className={`p-4 sm:p-5 rounded-2xl border ${
             theme === 'dark' ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 shadow-xs text-slate-900'
           }`}>
-            <div className="flex items-center justify-between text-xs opacity-75 mb-1.5">
-              <span>नेपाल राजपत्र मिति: <strong>{data.published_date}</strong></span>
-              <span>राजपत्र (नेराप) नं: <strong>{data.gazette_number}</strong></span>
+            <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-current/10">
+              <span className="px-2.5 py-0.5 rounded-lg bg-[#003893] text-white font-black text-[11px] sm:text-xs tracking-tight shadow-xs select-none">
+                e-Nirnaya
+              </span>
+              <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs">
+                <span className="opacity-75">नेराप: <strong>{data.published_date}</strong> (नं. {data.gazette_number})</span>
+                <span className="opacity-30">|</span>
+                <button
+                  onClick={() => setShowAboutModal(true)}
+                  className="font-bold text-red-600 dark:text-red-400 hover:underline cursor-pointer"
+                  title="हाम्रो बारेमा र गोपनीयता नीति"
+                >
+                  About & Privacy
+                </button>
+              </div>
             </div>
             <h2 className="text-base sm:text-lg font-extrabold text-red-700 dark:text-red-400">
               {data.title}
@@ -420,6 +432,22 @@ export const MobileReader: React.FC<Props> = ({
               );
             })}
           </div>
+
+          {/* Dashboard Footer with About & Privacy */}
+          <footer className="pt-6 pb-8 border-t border-current/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs opacity-75">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 rounded bg-[#003893] text-white font-black text-[10px]">
+                e-Nirnaya
+              </span>
+              <span>नेपाल सरकार | डिजिटल निर्णय नियमावली, २०८३</span>
+            </div>
+            <button
+              onClick={() => setShowAboutModal(true)}
+              className="font-bold text-red-600 dark:text-red-400 hover:underline cursor-pointer flex items-center gap-1.5"
+            >
+              <span>About & Privacy (हाम्रो बारेमा र गोपनीयता)</span>
+            </button>
+          </footer>
 
         </main>
       )}
@@ -595,6 +623,17 @@ export const MobileReader: React.FC<Props> = ({
             </div>
           )}
 
+          {/* Rule View Sub-Footer */}
+          <div className="mt-3 pt-3 border-t border-current/10 flex items-center justify-between text-[11px] opacity-70">
+            <span>e-Nirnaya | नेपाल राजपत्र २०८३</span>
+            <button
+              onClick={() => setShowAboutModal(true)}
+              className="font-bold text-red-600 dark:text-red-400 hover:underline cursor-pointer"
+            >
+              About & Privacy
+            </button>
+          </div>
+
         </main>
       )}
 
@@ -735,6 +774,13 @@ export const MobileReader: React.FC<Props> = ({
           </div>
         </div>
       )}
+
+      {/* About & Privacy Policy Modal */}
+      <AboutPrivacyModal
+        isOpen={showAboutModal}
+        onClose={() => setShowAboutModal(false)}
+        theme={theme}
+      />
 
     </div>
   );
