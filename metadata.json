@@ -1,0 +1,6 @@
+{
+  "name": "e-Nirnaya PWA (सरकारी डिजिटल निर्णय प्रणाली २०८३)",
+  "description": "सरकारी निर्णय प्रक्रिया (सरलीकरण तथा डिजिटल बनाउने) सम्बन्धी नियमावली, २०८३ बमोजिमको एकीकृत विद्युतीय सरकारी निर्णय, फाइल ट्रयाकिङ तथा सेवा प्रवाह प्रणाली।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
